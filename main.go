@@ -30,6 +30,9 @@ func (t Training) distance() float64 {
 
 // meanSpeed возвращает среднюю скорость бега или ходьбы.
 func (t Training) meanSpeed() float64 {
+	if t.Duration.Hours() == 0 {
+		return 0
+	}
 	return t.distance() / t.Duration.Hours()
 }
 
@@ -135,6 +138,9 @@ type Swimming struct {
 
 // @Override возвращает среднюю скорость при плавании.
 func (s Swimming) meanSpeed() float64 {
+	if s.Duration.Hours() == 0 {
+		return 0
+	}
 	return float64(s.LengthPool) * float64(s.CountPool) / MInKm / s.Duration.Hours()
 }
 
@@ -145,7 +151,7 @@ func (s Swimming) Calories() float64 {
 
 // @Override returns info about swimming training.
 func (s Swimming) TrainingInfo() InfoMessage {
-	return s.Training.TrainingInfo()
+	return InfoMessage{s.TrainingType, s.Duration, s.distance(), s.meanSpeed(), s.Calories()}
 }
 
 // ReadData возвращает информацию о проведенной тренировке.
